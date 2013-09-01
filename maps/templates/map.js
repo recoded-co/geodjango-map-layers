@@ -245,35 +245,3 @@ function getCookie(name) {
     }
     return cookieValue;
 }
-
-function geolocate(queryString) {
-    var requestSuccess = function(response) {
-        var format = new OpenLayers.Format.XLS();
-        var output = format.read(response.responseXML);
-        if (output.responseLists[0]) {
-            var geometry = output.responseLists[0].features[0].geometry;
-            var foundPosition = new OpenLayers.LonLat(geometry.x, geometry.y).transform(
-                    new OpenLayers.Projection("EPSG:4326"),
-                    map.getProjectionObject()
-                    );
-            map.setCenter(foundPosition, 16);
-        } else {
-            alert("Sorry, no address found");
-        }
-    }
- 
- 	var requestFailure = function(response) {
-    	alert("An error occurred while communicating with the OpenLS service. Please try again.");
-    }   
-    
-    var csrftoken = getCookie('csrftoken');
-    
-    OpenLayers.Request.POST({
-        url: "/proxy.cgi/php/OpenLSLUS_Geocode.php",
-        scope: this,
-        failure: this.requestFailure,
-        success: this.requestSuccess,
-        headers: {"Content-Type": "application/x-www-form-urlencoded", "X-CSRFToken": csrftoken},
-        data: "FreeFormAdress=" + encodeURIComponent(queryString) + "&MaxResponse=1"
-    });
-}
