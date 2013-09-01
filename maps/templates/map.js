@@ -208,20 +208,72 @@ gnt.maps.create_map = function (map_div, callback_function) {
 
     //make sure mapOptions controls are set correct
     mapOptions.controls = [new OpenLayers.Control.Navigation(),
-                        new OpenLayers.Control.Attribution(),
-                           new OpenLayers.Control.PanZoomBar()];
-
+                           new OpenLayers.Control.Attribution(),
+                           new OpenLayers.Control.PanZoom()
+                           ];
     {% if layer_data|length > 1 %}
         mapOptions.controls.push(new OpenLayers.Control.LayerSwitcher());
     {% endif %}
+    
     mapOptions['theme'] = null;
     mapOptions['fallThrough'] = true;
-
+    
+    //OpenLayers.ProxyHost = "";
     map = new OpenLayers.Map(map_div, mapOptions);
     map.addLayers(gnt.maps.layers);
     map.zoomToMaxExtent();
+
+	
 
     if(callback_function !== undefined) {
         callback_function(map);
     }
 };
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function geolocate(queryString) {
+    var requestSuccess = function(response) {
+        var format = new OpenLayers.Format.XLS();
+        var output = format.read(response.responseXML);
+        if (output.responseLists[0]) {
+            var geometry = output.responseLists[0].features[0].geometry;
+            var foundPosition = new OpenLayers.LonLat(geometry.x, geometry.y).transform(
+                    new OpenLayers.Projection("EPSG:4326"),
+                    map.getProjectionObject()
+                    );
+            map.setCenter(foundPosition, 16);
+        } else {
+            alert("Sorry, no address found");
+        }
+    }
+ 
+ 	var requestFailure = function(response) {
+    	alert("An error occurred while communicating with the OpenLS service. Please try again.");
+    }   
+    
+    var csrftoken = getCookie('csrftoken');
+    
+    OpenLayers.Request.POST({
+        url: "/proxy.cgi/php/OpenLSLUS_Geocode.php",
+        scope: this,
+        failure: this.requestFailure,
+        success: this.requestSuccess,
+        headers: {"Content-Type": "application/x-www-form-urlencoded", "X-CSRFToken": csrftoken},
+        data: "FreeFormAdress=" + encodeURIComponent(queryString) + "&MaxResponse=1"
+    });
+}
