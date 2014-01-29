@@ -80,6 +80,15 @@ gnt.maps.create_map = function (map_div, callback_function) {
     gnt.maps.layers.push(layer);
     {% endif %}
 
+    {% if layer_data.protocol == 'MapBox' %}
+    layer = new OpenLayers.Layer.OSM('MapBox',
+        [   "http://a.tiles.mapbox.com/v3/mmlodkowski.gpl722i4/${z}/${x}/${y}.png",
+            "http://b.tiles.mapbox.com/v3/mmlodkowski.gpl722i4/${z}/${x}/${y}.png",
+            "http://c.tiles.mapbox.com/v3/mmlodkowski.gpl722i4/${z}/${x}/${y}.png",
+            "http://d.tiles.mapbox.com/v3/mmlodkowski.gpl722i4/${z}/${x}/${y}.png"]);
+    gnt.maps.layers.push(layer);
+    {% endif %}
+
     {% if layer_data.protocol == 'OSM-mapquest' %}
     layer = new OpenLayers.Layer.OSM('OSM-mapquest',
         ["http://otile1.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.jpg",

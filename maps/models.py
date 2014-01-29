@@ -34,6 +34,7 @@ class Layer(models.Model):
         ('Google-hybrid', 'Google hybrid'),
         ('Google-road', 'Google road'),
         ('Google-terrain', 'Google terrain'),
+        ('MapBox','MapBox'),
     )
 
     slug_name = models.SlugField(max_length = 100,
@@ -107,6 +108,7 @@ class Source(models.Model):
         ('Google-hybrid', 'Google hybrid'),
         ('Google-road', 'Google road'),
         ('Google-terrain', 'Google terrain'),
+        ('MapBox','MapBox'),
     )
 
     service_type = models.CharField(
