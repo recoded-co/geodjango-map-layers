@@ -119,6 +119,23 @@ gnt.maps.create_map = function (map_div, callback_function) {
             "http://d.tiles.mapbox.com/v3/mmlodkowski.gpl722i4/${z}/${x}/${y}.png"]);
         {% endif%}
 
+        {% if layer.protocol == 'MapBox-satellite' %}
+        layer = new OpenLayers.Layer.OSM('MapBox Satellite',
+            [   "http://a.tiles.mapbox.com/v3/2michal3.gig3bd66/${z}/${x}/${y}.png",
+                "http://b.tiles.mapbox.com/v3/2michal3.gig3bd66/${z}/${x}/${y}.png",
+                "http://c.tiles.mapbox.com/v3/2michal3.gig3bd66/${z}/${x}/${y}.png",
+                "http://d.tiles.mapbox.com/v3/2michal3.gig3bd66/${z}/${x}/${y}.png"]);
+        {% endif %}
+
+        {% if layer.protocol == 'MapBox-road' %}
+        layer = new OpenLayers.Layer.OSM('MapBox Roads',
+            [   "http://a.tiles.mapbox.com/v3/2michal3.gig154l5/${z}/${x}/${y}.png",
+                "http://b.tiles.mapbox.com/v3/2michal3.gig154l5/${z}/${x}/${y}.png",
+                "http://c.tiles.mapbox.com/v3/2michal3.gig154l5/${z}/${x}/${y}.png",
+                "http://d.tiles.mapbox.com/v3/2michal3.gig154l5/${z}/${x}/${y}.png"]);
+        {% endif %}
+
+
         {% if layer.protocol == 'OSM-mapquest' %}
         layer = new OpenLayers.Layer.OSM('OSM-mapquest',
             ["http://otile1.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.jpg",
