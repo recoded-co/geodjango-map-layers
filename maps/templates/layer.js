@@ -90,7 +90,7 @@ gnt.maps.create_map = function (map_div, callback_function) {
     {% endif %}
 
     {% if layer_data.protocol == 'MapBox-satellite' %}
-    layer = new OpenLayers.Layer.OSM('MapBox Satellite',
+    layer = new OpenLayers.Layer.OSM('Satelita',
         [   "http://a.tiles.mapbox.com/v3/2michal3.gig3bd66/${z}/${x}/${y}.png",
             "http://b.tiles.mapbox.com/v3/2michal3.gig3bd66/${z}/${x}/${y}.png",
             "http://c.tiles.mapbox.com/v3/2michal3.gig3bd66/${z}/${x}/${y}.png",
@@ -99,7 +99,7 @@ gnt.maps.create_map = function (map_div, callback_function) {
     {% endif %}
 
     {% if layer_data.protocol == 'MapBox-road' %}
-    layer = new OpenLayers.Layer.OSM('MapBox Road',
+    layer = new OpenLayers.Layer.OSM('Ulice',
         [   "http://a.tiles.mapbox.com/v3/2michal3.gig154l5/${z}/${x}/${y}.png",
             "http://b.tiles.mapbox.com/v3/2michal3.gig154l5/${z}/${x}/${y}.png",
             "http://c.tiles.mapbox.com/v3/2michal3.gig154l5/${z}/${x}/${y}.png",
