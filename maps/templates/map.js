@@ -236,8 +236,12 @@ gnt.maps.create_map = function (map_div, callback_function) {
                            new OpenLayers.Control.Attribution(),
                            new OpenLayers.Control.PanZoomBar()
                            ];
+	var ls = false;
+	
     {% if layer_data|length > 1 %}
-        mapOptions.controls.push(new OpenLayers.Control.LayerSwitcher());
+		ls = new OpenLayers.Control.LayerSwitcher();
+        mapOptions.controls.push(ls);
+		
     {% endif %}
     
     mapOptions['theme'] = null;
@@ -247,7 +251,9 @@ gnt.maps.create_map = function (map_div, callback_function) {
     map = new OpenLayers.Map(map_div, mapOptions);
     map.addLayers(gnt.maps.layers);
     map.zoomToMaxExtent();
-
+	
+	if(ls)
+	ls.maximizeControl();
 	
 
     if(callback_function !== undefined) {
